@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文档生成器</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//cdn.bootcss.com/vue/1.0.22/vue.min.js"></script>
+</head>
+<body>
+
+<div class="container" id="app">
+    <form class="row">
+        <div class="form-group col-md-12">
+            <label>title</label>
+            <input type="text" class="form-control" placeholder="title" v-model="title" required>
+        </div>
+        <div class="form-group col-md-12">
+            <label>description</label>
+            <input type="text" class="form-control" placeholder="description" v-model="description" required>
+        </div>
+        <div class="col-md-3">
+            <label>method</label>
+            <select class="form-control" v-model="method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>DELETE</option>
+            </select>
+        </div>
+        <div class="form-group col-md-9">
+            <label>url</label>
+            <input type="text" class="form-control" placeholder="url" v-model="url" value="/api/v1" required>
+        </div>
+
+        <div class="col-md-12">
+            <label>request data</label>
+            <textarea class="form-control" rows="3" v-model="request"></textarea>
+        </div>
+
+        <div class="col-md-12">
+            <label>response data</label>
+            <textarea class="form-control" rows="5" v-model="response"></textarea>
+        </div>
+
+        <div class="col-md-12">
+            <label>response error data</label>
+            <textarea class="form-control" rows="3" v-model="error"></textarea>
+        </div>
+        <div class="col-md-12" style="padding-top: 5px">
+            <button type="button" v-on:click="generate" class="btn btn-success">generate</button>
+            <input type="reset" class="btn btn-danger">
+        </div>
+
+        <div class="col-md-12" style="padding-bottom: 20px">
+            <label>result</label>
+            <textarea class="form-control" rows="3" v-model="result" id="result"></textarea>
+        </div>
+    </form>
+</div>
+
+<script>
+var vm = new Vue({
+    el: "#app",
+    data: {
+        title: "",
+        url: "/api/v1",
+        description: "",
+        method: "GET",
+        request: "",
+        response: "",
+        error: "",
+        result: ""
+    },
+    methods: {
+        generate: function() {
+            if (!(vm.title && vm.url)) {
+                alert("error");
+                return;
+            }
+            vm.result += "## " + vm.title + "\n\n";
+
+            if (vm.description) {
+                vm.result += vm.description + "\n\n";
+            }
+
+            vm.result += "`" + vm.method + "`  `/api/v1" + vm.url + "`\n";
+            if (vm.request) {
+                vm.result += "\n请求数据\n\n```js\n" + vm.request + "\n```\n";
+            }
+
+            if (vm.response) {
+                vm.result += "\n响应\n\n```js\n" + vm.response + "\n```\n";
+            }
+
+            if (vm.error) {
+                vm.result += "\n错误响应\n\n```js\n" + vm.error + "\n```";
+            }
+            document.getElementById("result").focus();
+        }
+    }
+});
+</script>
+</body>
+</html>
