@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <title>文档生成器</title>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/vue/1.0.22/vue.min.js"></script>
 </head>
 <body>
 
 <div class="container" id="app">
+    <h3>文档生成器</h3>
     <form class="row">
         <div class="form-group col-md-12">
-            <label>title</label>
+            <label>Title</label>
             <input type="text" class="form-control" placeholder="title" v-model="title" required>
         </div>
         <div class="form-group col-md-12">
-            <label>description</label>
+            <label>Description</label>
             <input type="text" class="form-control" placeholder="description" v-model="description" required>
         </div>
         <div class="col-md-3">
-            <label>method</label>
+            <label>Method</label>
             <select class="form-control" v-model="method">
                 <option>GET</option>
                 <option>POST</option>
@@ -28,31 +30,32 @@
             </select>
         </div>
         <div class="form-group col-md-9">
-            <label>url</label>
+            <label>URL</label>
             <input type="text" class="form-control" placeholder="url" v-model="url" value="/api/v1" required>
         </div>
 
         <div class="col-md-12">
-            <label>request data</label>
+            <label>Request data</label>
             <textarea class="form-control" rows="3" v-model="request"></textarea>
         </div>
 
         <div class="col-md-12">
-            <label>response data</label>
+            <label>Response data</label>
             <textarea class="form-control" rows="5" v-model="response"></textarea>
         </div>
 
         <div class="col-md-12">
-            <label>response error data</label>
+            <label>Response error data</label>
             <textarea class="form-control" rows="3" v-model="error"></textarea>
         </div>
         <div class="col-md-12" style="padding-top: 5px">
             <button type="button" v-on:click="generate" class="btn btn-success">generate</button>
             <button type="button" v-on:click="init" class="btn btn-danger">reset</button>
+            <a href="http://www.bejson.com/" class="btn btn-info" target="_blank">JSON tool</a>
         </div>
 
         <div class="col-md-12" style="padding-bottom: 20px">
-            <label>result</label>
+            <label>Result</label>
             <textarea class="form-control" rows="3" v-model="result" id="result"></textarea>
         </div>
     </form>
@@ -108,6 +111,69 @@ var vm = new Vue({
             document.getElementById("result").focus();
         }
     }
+});
+
+(function($) {
+
+    // jQuery plugin definition
+    $.fn.TextAreaExpander = function(minHeight, maxHeight) {
+
+        var hCheck = !($.browser.msie || $.browser.opera);
+
+        // resize a textarea
+        function ResizeTextarea(e) {
+
+            // event or initialize element?
+            e = e.target || e;
+
+            // find content length and box width
+            var vlen = e.value.length, ewidth = e.offsetWidth;
+            if (vlen != e.valLength || ewidth != e.boxWidth) {
+
+                if (hCheck && (vlen < e.valLength || ewidth != e.boxWidth)) e.style.height = "0px";
+                var h = Math.max(e.expandMin, Math.min(e.scrollHeight, e.expandMax));
+
+                e.style.overflow = (e.scrollHeight > h ? "auto" : "hidden");
+                e.style.height = h + "px";
+
+                e.valLength = vlen;
+                e.boxWidth = ewidth;
+            }
+
+            return true;
+        };
+
+        // initialize
+        this.each(function() {
+
+            // is a textarea?
+            if (this.nodeName.toLowerCase() != "textarea") return;
+
+            // set height restrictions
+            var p = this.className.match(/expand(\d+)\-*(\d+)*/i);
+            this.expandMin = minHeight || (p ? parseInt('0'+p[1], 10) : 0);
+            this.expandMax = maxHeight || (p ? parseInt('0'+p[2], 10) : 99999);
+
+            // initial resize
+            ResizeTextarea(this);
+
+            // zero vertical padding and add events
+            if (!this.Initialized) {
+                this.Initialized = true;
+                $(this).css("padding-top", 0).css("padding-bottom", 0);
+                $(this).bind("keyup", ResizeTextarea).bind("focus", ResizeTextarea);
+            }
+        });
+
+        return this;
+    };
+
+})(jQuery);
+
+
+// initialize all expanding textareas
+jQuery(document).ready(function() {
+    jQuery("textarea").TextAreaExpander(minHeight=120);
 });
 </script>
 </body>
