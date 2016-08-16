@@ -48,7 +48,7 @@
         </div>
         <div class="col-md-12" style="padding-top: 5px">
             <button type="button" v-on:click="generate" class="btn btn-success">generate</button>
-            <input type="reset" class="btn btn-danger">
+            <button type="button" v-on:click="init" class="btn btn-danger">reset</button>
         </div>
 
         <div class="col-md-12" style="padding-bottom: 20px">
@@ -72,6 +72,18 @@ var vm = new Vue({
         result: ""
     },
     methods: {
+        init: function() {
+            vm = {
+                title: "",
+                url: "/api/v1",
+                description: "",
+                method: "GET",
+                request: "",
+                response: "",
+                error: "",
+                result: ""
+            };
+        },
         generate: function() {
             if (!(vm.title && vm.url)) {
                 alert("error");
