@@ -73,17 +73,15 @@ var vm = new Vue({
     },
     methods: {
         init: function() {
-            vm = {
-                title: "",
-                url: "/api/v1",
-                description: "",
-                method: "GET",
-                request: "",
-                response: "",
-                error: "",
-                result: ""
-            };
-        },
+            vm.title = "";
+            vm.url = "/api/v1";
+            vm.description = "";
+            vm.method = "GET";
+            vm.request = "";
+            vm.response = "";
+            vm.error = "";
+            vm.result = "";
+        };
         generate: function() {
             if (!(vm.title && vm.url)) {
                 alert("error");
