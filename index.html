@@ -97,7 +97,7 @@ var vm = new Vue({
                 vm.result += vm.description + "\n\n";
             }
 
-            vm.result += "`" + vm.method + "`  `/api/v1" + vm.url + "`\n";
+            vm.result += "`" + vm.method + "`  `" + vm.url + "`\n";
             if (vm.request) {
                 vm.result += "\n请求数据\n\n```js\n" + vm.request + "\n```\n";
             }
