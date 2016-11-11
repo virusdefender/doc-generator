@@ -99,12 +99,24 @@ var vm = new Vue({
 
             vm.result += "`" + vm.method + "`  `" + vm.url + "`\n";
             if (vm.request) {
-                vm.request = JSON.stringify(JSON.parse(vm.request), null, 4);
+                try {
+                    vm.request = JSON.stringify(JSON.parse(vm.request), null, 4);
+                }
+                catch (e) {
+                    alert("error request json format");
+                    return;
+                }
                 vm.result += "\n请求数据\n\n```js\n" + vm.request + "\n```\n";
             }
 
             if (vm.response) {
-                vm.response = JSON.stringify(JSON.parse(vm.response), null, 4);
+                try {
+                    vm.response = JSON.stringify(JSON.parse(vm.response), null, 4);
+                }
+                catch (e) {
+                    alert("error response json format");
+                    return;
+                }
                 vm.result += "\n响应\n\n```js\n" + vm.response + "\n```\n";
             }
 
