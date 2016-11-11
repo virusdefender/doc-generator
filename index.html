@@ -99,10 +99,12 @@ var vm = new Vue({
 
             vm.result += "`" + vm.method + "`  `" + vm.url + "`\n";
             if (vm.request) {
+                vm.request = JSON.stringfy(JSON.parse(vm.request), null, 4);
                 vm.result += "\n请求数据\n\n```js\n" + vm.request + "\n```\n";
             }
 
             if (vm.response) {
+                vm.response = JSON.stringfy(JSON.parse(vm.response), null, 4);
                 vm.result += "\n响应\n\n```js\n" + vm.response + "\n```\n";
             }
 
